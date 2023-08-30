@@ -7,12 +7,13 @@ def parse_gga_sentence(data):
         if isinstance(sentence, pynmea2.GGA):
             latitude = sentence.latitude
             longitude = sentence.longitude
-            return latitude, longitude
+            timestamp = sentence.timestamp.strftime("%Y-%m-%d %H:%M:%S") if sentence.timestamp else "N/A"
+            return latitude, longitude, timestamp
         else:
-            return None, None
+            return None, None, None
     except pynmea2.ParseError as e:
         print(f"Error parsing GGA sentence: {e}")
-        return None, None
+        return None, None, None
 
 def display_serial_data(com_port, baud_rate):
     try:
@@ -24,9 +25,9 @@ def display_serial_data(com_port, baud_rate):
             if data.startswith("$GNGGA"):
                 print(f"Incoming GGA sentence: {data}")
 
-                latitude, longitude = parse_gga_sentence(data)
+                latitude, longitude, timestamp = parse_gga_sentence(data)
                 if latitude is not None and longitude is not None:
-                    print(f"Latitude: {latitude:.6f}, Longitude: {longitude:.6f}")
+                    print(f"Latitude: {latitude:.6f}, Longitude: {longitude:.6f}, Timestamp: {timestamp}")
 
     except KeyboardInterrupt:
         print("\nExiting the program.")
