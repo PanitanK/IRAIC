@@ -9,6 +9,7 @@ def parse_gga_sentence(data):
             latitude = sentence.latitude
             longitude = sentence.longitude
             timestamp = sentence.timestamp.strftime("%Y-%m-%d %H:%M:%S") if sentence.timestamp else "N/A"
+            print(sentence)
             return latitude, longitude, timestamp
         else:
             return None, None , None
